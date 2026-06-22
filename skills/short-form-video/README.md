@@ -21,4 +21,4 @@ Engineer a 9:16 video that survives the swipe. Short-form is a retention machine
 - `references/retention-pacing.md` — deeper guidance on retention editing and pacing.
 
 ---
-Part of **[Short-Form Video Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Part of **[Short-Form Video Skills](../../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

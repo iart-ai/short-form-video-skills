@@ -10,16 +10,24 @@
 npx skills add iart-ai/tiktok-video-skills
 ```
 
+Or add it as a Claude Code plugin marketplace:
+
+```bash
+/plugin marketplace add iart-ai/tiktok-video-skills
+```
+
+then `/plugin install tiktok-video-skills`.
+
 Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## What's included
 
 | Skill | What it does |
 |---|---|
-| [short-form-video](./short-form-video) | The hook → retention → loop grammar of vertical 9:16 video — hooks, pattern interrupts, pacing, and repeatable templates. |
-| [caption-animation](./caption-animation) | Word-timed, karaoke-style captions from a transcript or voiceover — per-word pop, active-word highlight, safe-area placement. |
-| [countdown-video](./countdown-video) | Frame-accurate, drift-free countdown timers with digit flip/roll motion and a configurable duration. |
-| [lower-thirds](./lower-thirds) | Clean, branded name/role lower thirds with staged enter/exit animation — templated across a whole roster. |
+| [short-form-video](./skills/short-form-video) | The hook → retention → loop grammar of vertical 9:16 video — hooks, pattern interrupts, pacing, and repeatable templates. |
+| [caption-animation](./skills/caption-animation) | Word-timed, karaoke-style captions from a transcript or voiceover — per-word pop, active-word highlight, safe-area placement. |
+| [countdown-video](./skills/countdown-video) | Frame-accurate, drift-free countdown timers with digit flip/roll motion and a configurable duration. |
+| [lower-thirds](./skills/lower-thirds) | Clean, branded name/role lower thirds with staged enter/exit animation — templated across a whole roster. |
 
 ## When it activates
 
@@ -39,10 +47,10 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## Skills
 
-- [short-form-video](./short-form-video)
-- [caption-animation](./caption-animation)
-- [countdown-video](./countdown-video)
-- [lower-thirds](./lower-thirds)
+- [short-form-video](./skills/short-form-video)
+- [caption-animation](./skills/caption-animation)
+- [countdown-video](./skills/countdown-video)
+- [lower-thirds](./skills/lower-thirds)
 
 ## Topics
 

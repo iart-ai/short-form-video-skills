@@ -1,0 +1,14 @@
+{
+  "name": "tiktok-video-skills",
+  "owner": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "plugins": [
+    {
+      "name": "tiktok-video-skills",
+      "source": "./",
+      "description": "TikTok, Reels, and Shorts skills for AI coding agents — engineer short-form video that survives the swipe."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "tiktok-video-skills",
+  "version": "0.1.0",
+  "description": "TikTok, Reels, and Shorts skills for AI coding agents — engineer short-form video that survives the swipe.",
+  "author": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "homepage": "https://iart.ai",
+  "repository": "https://github.com/iart-ai/tiktok-video-skills",
+  "license": "MIT",
+  "keywords": [
+    "tiktok",
+    "short-form-video",
+    "reels",
+    "youtube-shorts",
+    "captions",
+    "lower-thirds",
+    "motion-graphics",
+    "video-template",
+    "claude-skill"
+  ]
+}
