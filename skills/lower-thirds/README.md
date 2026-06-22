@@ -21,4 +21,4 @@ Build a clean, branded lower third — the name/role caption that lives in the b
 - `references/lower-third-component.md` — a reusable lower-third component.
 
 ---
-Part of **[Short-Form Video Skills](../../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Part of **[Short-Form Video Skills](../../)** · Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=tiktok-video-skills&utm_content=skill_footer&utm_term=lower-thirds)** — the AI motion agent for editable, on-brand motion graphics.
