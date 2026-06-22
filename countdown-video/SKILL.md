@@ -115,6 +115,8 @@ Stream screens hold for minutes, so the background must loop seamlessly. Build m
 
 ## Deliver & verify (rendered stills → MP4)
 
+> **Packaged helper** (`scripts/`): tile your stills with `scripts/contact-sheet.sh sheet.png f-hook.png f-mid.png f-end.png`, then assert the encode with `scripts/probe-mp4.sh out.mp4 [WxH] [fps]`. See `scripts/README.md`.
+
 The countdown ships as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`, `durationInSeconds` a prop) — the timer is a pure function of `useCurrentFrame()`, never `setInterval` / `Date.now()` / `Math.random()`. Set `durationInFrames = durationInSeconds * fps`. Deliverable = `out/*.mp4` + the project. 9:16 vertical (1080×1920) is the default.
 
 **Verify loop — render stills → inspect → encode.** The whole point is frame-accuracy, so check the *digit value* at exact frames before encoding.

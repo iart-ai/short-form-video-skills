@@ -142,6 +142,8 @@ Emit both: burn the animated captions for social, and write a plain SRT/VTT from
 
 ## Deliver & verify (rendered stills → MP4)
 
+> **Packaged helper** (`scripts/`): tile your stills with `scripts/contact-sheet.sh sheet.png f-hook.png f-mid.png f-end.png`, then assert the encode with `scripts/probe-mp4.sh out.mp4 [WxH] [fps]`. See `scripts/README.md`.
+
 Captions ship as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`) — all word motion frame-driven off `useCurrentFrame()`, never `Date.now()` / `Math.random()` / timers. Deliverable = `out/*.mp4` (burned-in) + the project + the sidecar SRT/VTT. 9:16 vertical (1080×1920) is the default.
 
 **Verify loop — render stills → inspect → encode.** Word timing is the thing that breaks; check it at exact frames before you spend an encode.

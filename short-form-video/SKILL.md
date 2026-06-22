@@ -120,6 +120,8 @@ Put the hook text and key subject in the center 900×1400 box. Reserve the botto
 
 ## Deliver & verify (rendered stills → MP4)
 
+> **Packaged helper** (`scripts/`): tile your stills with `scripts/contact-sheet.sh sheet.png f-hook.png f-mid.png f-end.png`, then assert the encode with `scripts/probe-mp4.sh out.mp4 [WxH] [fps]`. See `scripts/README.md`.
+
 The short ships as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`) — every cut, punch-in, and interrupt driven by `useCurrentFrame()`, never `Date.now()` / `Math.random()` / timers. Deliverable = `out/*.mp4` + the project (re-render per topic). 9:16 vertical (1080×1920) is the default.
 
 **Verify loop — render stills → inspect → encode.** Three frames test the three things that make or break retention: the hook, the pacing, and the loop seam.

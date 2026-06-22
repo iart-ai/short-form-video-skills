@@ -110,6 +110,8 @@ In a renderer, make the roster an input prop and render once per row (`--props`)
 
 ## Deliver & verify (rendered stills → MP4)
 
+> **Packaged helper** (`scripts/`): tile your stills with `scripts/contact-sheet.sh sheet.png f-hook.png f-mid.png f-end.png`, then assert the encode with `scripts/probe-mp4.sh out.mp4 [WxH] [fps]`. See `scripts/README.md`.
+
 The lower third ships as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`, name/role/theme as props) — enter/dwell/exit all driven by `useCurrentFrame()`, never `Date.now()` / `Math.random()` / timers. Deliverable = `out/*.mp4` + the project (re-render per roster row). 9:16 vertical (1080×1920) is the default.
 
 **Verify loop — render stills → inspect → encode.** Sample the three phases so you catch a stagger or safe-area bug before encoding (or batching the whole roster).
