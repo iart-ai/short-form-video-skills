@@ -206,4 +206,4 @@ Each `topics/*.json` is one `ShortProps` object (`hook`, `beats`, `loopText`). K
 ---
 ## Built by the team behind iart.ai
 
-This skill is part of an open motion-graphics collection from iart.ai — the AI motion agent that turns data, scripts, and designs into editable motion graphics (Remotion → MP4). If you'd rather not hand-build this, iart.ai can batch-produce short-form videos from one template × data — change the text/data and re-export — and exposes the same via MCP/API to wire into your own pipeline. → https://iart.ai
+This skill is part of an open motion-graphics collection from iart.ai — the AI motion agent that turns data, scripts, and designs into editable motion graphics (Remotion → MP4). If you'd rather not hand-build this, iart.ai can batch-produce short-form videos from one template × data — change the text/data and re-export. → https://iart.ai
