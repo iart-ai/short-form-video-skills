@@ -333,7 +333,7 @@
   gsap.to('#blobC', { xPercent: -22, yPercent: 16, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' });
 
   function build() {
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' }, paused: true });
     tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 7.6, ease: 'none' }, 0);
 
     // ===== SCENE 1 (0.0 – 1.3) HOOK =====
@@ -353,7 +353,7 @@
       .set('#s1', { autoAlpha: 0 });
 
     // ===== SCENE 2 (1.3 – 3.0) PHONE + caption pop =====
-    gsap.set('#phone', { scale: 0.7, rotateY: -25 });
+    tl.set('#phone', { scale: 0.7, rotateY: -25 }, 1.29);
     tl.set('#phone', { autoAlpha: 1 }, 1.3)
       .from('#phone', { scale: 0.55, rotateY: -35, y: 60, opacity: 0, duration: 0.6, ease: 'back.out(1.5)' }, 1.3)
       .to('#phone', { rotateY: 0, scale: 1, y: 0, duration: 0.6 }, 1.35)
@@ -361,7 +361,7 @@
       .from(['#phone .ui-bottom','#phone .ui-bottom2'], { scaleX: 0, transformOrigin: 'left', stagger: 0.08, duration: 0.4 }, 1.85);
 
     // captions pop word-by-word over the phone
-    gsap.set('#captions', { y: '-6vh' });
+    tl.set('#captions', { y: '-6vh' }, 2.04);
     tl.set('#captions', { autoAlpha: 1 }, 2.05);
     const caps = gsap.utils.toArray('.cap');
     caps.forEach((c, i) => {
@@ -377,20 +377,20 @@
     // TRANSITION 2 — VENETIAN SHUTTER (vertical blinds for vertical energy)
     const blinds = ['#p1','#p2','#p3','#p4'];
     const blindColors = ['var(--violet)','var(--pink)','var(--cyan)','var(--violet)'];
-    gsap.set(blinds, {
+    tl.set(blinds, {
       visibility: 'visible', top: 0, height: '100%', width: '25.2%',
       left: (i) => (i * 25) + '%',
       backgroundColor: (i) => blindColors[i],
       scaleX: 0, transformOrigin: 'left center'
-    });
+    }, 3.04);
     tl.to(blinds, { scaleX: 1, duration: 0.22, stagger: 0.05, ease: 'power2.in' }, 3.05)
       .set(blinds, { transformOrigin: 'right center' }, 3.36)
       .to(blinds, { scaleX: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }, 3.38)
       .set(blinds, { visibility: 'hidden' }, 3.72);
 
     // ===== SCENE 3 (3.3 – 4.7) COUNTDOWN 3-2-1 =====
-    gsap.set('#countRing', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 });
-    gsap.set('#count', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 });
+    tl.set('#countRing', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 }, 3.34);
+    tl.set('#count', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 }, 3.34);
     const nums = ['3','2','1'];
     tl.set('#count', { autoAlpha: 1 }, 3.35)
       .set('#countRing', { autoAlpha: 1 }, 3.35);
@@ -409,12 +409,12 @@
     // TRANSITION 3 — COLOR-BAND WIPE (diagonal)
     const bands = ['#p1','#p2','#p3'];
     const bandColors = ['var(--pink)','var(--violet)','var(--cyan)'];
-    gsap.set(bands, {
+    tl.set(bands, {
       visibility: 'visible', left: '-5%', width: '110%', height: '120%',
       top: 0, skewY: 8,
       backgroundColor: (i) => bandColors[i],
       yPercent: -130
-    });
+    }, 4.71);
     tl.to(bands, { yPercent: 130, duration: 0.5, stagger: 0.08, ease: 'power3.inOut' }, 4.72)
       .set(bands, { visibility: 'hidden' }, 5.32);
 
@@ -445,11 +445,11 @@
       .set('#s5', { autoAlpha: 0 });
 
     // TRANSITION 5 — IRIS open
-    gsap.set('#p1', {
+    tl.set('#p1', {
       visibility: 'visible', top: '50%', left: '50%', width: '300vmax', height: '300vmax',
       xPercent: -50, yPercent: -50, borderRadius: '50%',
       backgroundColor: 'var(--bg)', scale: 1
-    });
+    }, 6.69);
     tl.set('#p1', { scale: 1 }, 6.7)
       .to('#p1', { scale: 0, duration: 0.45, ease: 'power3.inOut' }, 6.7)
       .set('#p1', { visibility: 'hidden' }, 7.15);
@@ -491,6 +491,7 @@
   }
 
   let master = build();
+  master.play(0);
   document.getElementById('replay').addEventListener('click', () => master.restart());
 </script>
 </body>
