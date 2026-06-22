@@ -14,6 +14,26 @@ Engineer a 9:16 video that survives the swipe. Short-form is not a small launch 
 - Retention editing: fixing drop-off, adding pattern interrupts, tightening pacing.
 - Hooks, seamless loops, repeatable short-form templates (one design, many topics).
 
+## Story structure (the retention contract)
+
+Short-form storytelling is a contract with the viewer's thumb: every second must re-earn the next one. The narrative is shaped *backwards from the retention curve*, not forwards from an intro. Lock these before touching the timeline.
+
+- **One idea per video.** A short carries exactly one payoff. A second idea splits attention and the curve sags in the middle — make it a second video instead. If you can't name the single takeaway in a sentence, you don't have a short yet.
+- **Open a loop in the first ~3s, close it last.** The hook poses a question or gap (the open loop); the payoff answers it. The viewer stays because the loop is open — so never answer it early, and never bury the payoff under setup.
+- **No dead air.** Every beat either advances the idea or resets attention. Cut anything that does neither. Silence, slow ramps, throat-clearing intros ("hey guys, in this video…") are where viewers swipe.
+- **Why the curve, not the cut, is the unit of work.** The algorithm distributes whatever holds the per-second retention curve flat; a "good" edit that flattens the curve loses to an ugly one that keeps it up. You are editing the *curve*, and the hook gates everything after it — fix it first.
+
+The narrative spine (the `Hook → Setup → Body → Payoff/loop` arc is budgeted in the table below):
+
+| Move | Story job | Failure if missed |
+|---|---|---|
+| Hook | Open the loop; promise the payoff | Swipe in first 3s |
+| Tension hold | Keep the gap open through the body | Flat middle, mid-drop |
+| Payoff | Close the loop — the one idea, delivered | "Wasted my time," no share |
+| Loop / CTA | Feed back to frame 0, or one clear ask | No re-watch, no action |
+
+(`The retention arc` table below assigns seconds to each move; this section is the narrative logic and ordering behind it. `Hook grammar` lists the hook archetypes.)
+
 ## The one metric that drives everything
 
 **Retention, not production value.** The algorithm distributes whatever holds viewers; ~87% decide to stay or swipe inside 3 seconds, and the threshold for distribution sits near **70%+ average view-through** (Shorts ~73%, TikTok ~78%, Reels ~65%). Every decision below trades against that curve. A flawless shot that bores at 0:04 loses to an ugly one that holds.
