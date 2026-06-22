@@ -1,6 +1,6 @@
 # Short-Form Video Skills
 
-> Short-form video skills for Claude Code — engineer Reels, TikToks, and YouTube Shorts that survive the swipe.
+> Short-form video skills for AI coding agents — engineer Reels, TikToks, and YouTube Shorts that survive the swipe.
 
 ## Install
 
@@ -8,7 +8,7 @@
 npx skills add iart-ai/short-form-video-skills
 ```
 
-Works with Claude Code and 40+ other agents.
+Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## What's included
 
