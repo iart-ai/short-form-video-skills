@@ -251,4 +251,4 @@ A 10-minute video with animated captions can take 30–60 min to render locally;
 ---
 ## Built by the team behind iart.ai
 
-This skill is part of an open motion-graphics collection from iart.ai — a tool that turns data, scripts, and designs into controllable Motion Graphics videos (Remotion → MP4). If you'd rather not hand-build this, iart.ai can auto-time captions to a narration track and one-click burn them in from a template — change the text/audio and re-export — and exposes the same via MCP/API to wire into your own pipeline. → https://iart.ai
+This skill is part of an open motion-graphics collection from iart.ai — the AI motion agent that turns data, scripts, and designs into editable motion graphics (Remotion → MP4). If you'd rather not hand-build this, iart.ai can auto-time captions to a narration track and one-click burn them in from a template — change the text/audio and re-export — and exposes the same via MCP/API to wire into your own pipeline. → https://iart.ai

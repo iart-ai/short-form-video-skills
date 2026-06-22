@@ -21,4 +21,4 @@ Turn a transcript or voiceover into word-timed, scroll-stopping captions: each w
 - `references/word-timed-captions.md` — deeper guidance on word-level timing and animation.
 
 ---
-Part of **[Short-Form Video Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Short-Form Video Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

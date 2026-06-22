@@ -22,4 +22,4 @@ Make a countdown that ends exactly when it should. The whole craft is one idea: 
 - `references/digit-flip.md` — digit flip/roll transition techniques.
 
 ---
-Part of **[Short-Form Video Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Short-Form Video Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
