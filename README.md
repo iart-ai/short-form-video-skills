@@ -2,6 +2,8 @@
 
 > TikTok, Reels, and Shorts skills for AI coding agents — engineer short-form video that survives the swipe.
 
+![TikTok Video Skills — animated showcase](./showcase.gif)
+
 ## Install
 
 ```bash

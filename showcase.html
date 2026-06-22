@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Short Form · GSAP · Energy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@700;800;900&family=Inter:wght@600;800;900&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@700;800;900&family=Inter:wght@600;800;900&display=swap"></noscript>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:     #0c0612;
+    --ink:    #ffffff;
+    --pink:   #ff2e93;
+    --magenta:#ff00d4;
+    --cyan:   #00f0ff;
+    --violet: #7b2ff7;
+    --lime:   #c4ff00;
+    --amber:  #ffb800;
+    --teal:   #00ffa3;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  #stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(110% 90% at 50% -10%, #2a0a3d 0%, #170822 45%, var(--bg) 100%);
+    perspective: 1300px;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(75px); opacity: 0.5;
+    will-change: transform; pointer-events: none;
+  }
+  #blobA { width: 46vmin; height: 46vmin; background: var(--magenta); top: -12%; left: -8%; }
+  #blobB { width: 42vmin; height: 42vmin; background: var(--cyan);    bottom: -14%; right: -10%; opacity: 0.38; }
+  #blobC { width: 30vmin; height: 30vmin; background: var(--violet);  top: 50%; left: 60%; opacity: 0.30; }
+
+  .scene {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    will-change: transform, opacity;
+    z-index: 4;
+  }
+  .line { display: flex; gap: 0 0.05em; overflow: visible; padding: 0.04em 0; justify-content: center; }
+  .char { display: inline-block; will-change: transform, opacity; }
+
+  .kicker {
+    font-family: 'Inter', sans-serif; font-weight: 900;
+    font-size: clamp(0.66rem, 1.5vw, 1rem);
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--cyan); text-indent: 0.4em;
+  }
+
+  .word {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 14vw, 11rem);
+    line-height: 0.86; letter-spacing: 0.01em;
+    color: var(--ink); text-transform: uppercase;
+    white-space: nowrap; will-change: transform, opacity;
+  }
+  .word.pink   { color: var(--pink); }
+  .word.cyan   { color: var(--cyan); }
+  .word.lime   { color: var(--lime); }
+  .word.grad   {
+    background: linear-gradient(120deg, var(--pink), var(--violet), var(--cyan));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* ===== phone frame ===== */
+  #phone {
+    position: absolute; z-index: 2;
+    width: min(30vh, 270px); height: min(62vh, 560px);
+    border-radius: 38px;
+    background: linear-gradient(180deg, #1a0f28, #0e0718);
+    border: 6px solid #2a1840;
+    box-shadow: 0 40px 120px rgba(255,0,160,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+    will-change: transform, opacity;
+  }
+  #phone .notch {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 38%; height: 18px; border-radius: 999px; background: #000; z-index: 3;
+  }
+  #phone .screen {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #ff2e93 0%, #7b2ff7 50%, #00f0ff 100%);
+    opacity: 0.92;
+  }
+  #phone .screen::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(60% 40% at 50% 30%, rgba(255,255,255,0.25), transparent 70%);
+  }
+  #phone .ui-side {
+    position: absolute; right: 12px; bottom: 56px; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  #phone .ui-side .ico {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 16px; will-change: transform;
+  }
+  #phone .ui-bottom {
+    position: absolute; left: 14px; bottom: 18px; z-index: 4;
+    width: 56%; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.3);
+  }
+  #phone .ui-bottom2 {
+    position: absolute; left: 14px; bottom: 32px; z-index: 4;
+    width: 40%; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.45);
+  }
+
+  /* caption pop words — bold outlined */
+  #captions {
+    position: absolute; z-index: 6;
+    display: flex; flex-wrap: wrap; gap: 0.1em 0.18em;
+    justify-content: center; align-items: center;
+    width: min(74vw, 520px);
+  }
+  .cap {
+    font-family: 'Montserrat', sans-serif; font-weight: 900;
+    font-size: clamp(1.8rem, 7vw, 4.2rem);
+    text-transform: uppercase; line-height: 1;
+    color: var(--ink);
+    -webkit-text-stroke: 3px #000;
+    paint-order: stroke fill;
+    text-shadow: 0 6px 0 rgba(0,0,0,0.25);
+    will-change: transform, opacity; display: inline-block;
+  }
+  .cap.hl { color: var(--lime); }
+  .cap.hl2 { color: var(--cyan); }
+
+  /* countdown */
+  #count {
+    position: absolute; z-index: 6;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(10rem, 44vw, 30rem); line-height: 1;
+    color: var(--ink);
+    will-change: transform, opacity;
+  }
+  #countRing {
+    position: absolute; z-index: 5;
+    width: 46vmin; height: 46vmin; border-radius: 50%;
+    border: 6px solid var(--cyan);
+    will-change: transform, opacity;
+  }
+
+  /* heart burst */
+  #heartWrap { position: absolute; z-index: 6; will-change: transform, opacity; }
+  .heart {
+    position: absolute; left: 50%; top: 50%;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    will-change: transform, opacity; pointer-events: none;
+  }
+  #bigHeart {
+    position: absolute; z-index: 7; left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    font-size: clamp(7rem, 30vw, 18rem);
+    will-change: transform, opacity;
+    filter: drop-shadow(0 10px 30px rgba(255,46,147,0.6));
+  }
+
+  .brandmark {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: lowercase;
+    font-size: clamp(3.4rem, 18vw, 15rem);
+    line-height: 0.84; letter-spacing: 0.0em; color: var(--ink);
+  }
+  .brandmark .red {
+    background: linear-gradient(120deg, var(--pink), var(--cyan));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  #fx { position: fixed; inset: 0; pointer-events: none; z-index: 45; overflow: hidden; }
+  .panel { position: absolute; will-change: transform; visibility: hidden; }
+
+  #flash { position: fixed; inset: 0; background: var(--ink); opacity: 0; pointer-events: none; z-index: 50; }
+
+  .grain {
+    position: fixed; inset: 0; pointer-events: none;
+    opacity: 0.06; mix-blend-mode: overlay; z-index: 60;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #progress {
+    position: fixed; left: 0; bottom: 0; height: 4px; width: 100%;
+    transform: scaleX(0); transform-origin: left;
+    background: linear-gradient(90deg, var(--pink), var(--violet), var(--cyan));
+    z-index: 70;
+  }
+
+  .ui {
+    position: fixed; font-family: 'Inter', sans-serif; font-weight: 900;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    z-index: 80; color: #b48ad0;
+  }
+  #brand { top: 22px; left: 24px; }
+  #brand b { color: var(--cyan); }
+  #replay {
+    bottom: 18px; right: 22px; background: transparent;
+    border: 1.5px solid #3a2455; border-radius: 999px;
+    padding: 9px 18px; cursor: pointer; color: #b48ad0;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  #replay:hover { color: var(--bg); background: var(--pink); border-color: var(--pink); }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="blob" id="blobA"></div>
+    <div class="blob" id="blobB"></div>
+    <div class="blob" id="blobC"></div>
+
+    <!-- Scene 1 : hook -->
+    <div class="scene" id="s1">
+      <div class="line"><span class="kicker">For You · Now Playing</span></div>
+      <div class="line"><span class="word grad">GO</span></div>
+      <div class="line"><span class="word">VIRAL</span></div>
+    </div>
+
+    <!-- phone frame (decor) -->
+    <div id="phone">
+      <div class="notch"></div>
+      <div class="screen"></div>
+      <div class="ui-side">
+        <div class="ico">♥</div>
+        <div class="ico">💬</div>
+        <div class="ico">↗</div>
+      </div>
+      <div class="ui-bottom2"></div>
+      <div class="ui-bottom"></div>
+    </div>
+
+    <!-- caption pop -->
+    <div id="captions">
+      <span class="cap">WAIT</span>
+      <span class="cap hl">FOR</span>
+      <span class="cap">IT</span>
+      <span class="cap hl2">&hellip;</span>
+    </div>
+
+    <!-- countdown -->
+    <div id="countRing"></div>
+    <div id="count">3</div>
+
+    <!-- heart burst -->
+    <div id="bigHeart">&#10084;&#65039;</div>
+    <div id="heartWrap"></div>
+
+    <!-- Scene 5 : SHORT FORM bridge -->
+    <div class="scene" id="s5">
+      <div class="line"><span class="word pink">SHORT</span></div>
+      <div class="line"><span class="word cyan">FORM</span></div>
+    </div>
+
+    <!-- Scene 6 : brand finale -->
+    <div class="scene" id="s6">
+      <div class="line"><span class="kicker">Short Form · TikTok</span></div>
+      <div class="line"><span class="word brandmark">iart<span class="red">.</span>ai</span></div>
+      <div class="line"><span class="kicker">Made to be Watched</span></div>
+    </div>
+  </div>
+
+  <div id="fx">
+    <div class="panel" id="p1"></div>
+    <div class="panel" id="p2"></div>
+    <div class="panel" id="p3"></div>
+    <div class="panel" id="p4"></div>
+  </div>
+
+  <div id="flash"></div>
+  <div class="grain"></div>
+  <div id="progress"></div>
+  <div class="ui" id="brand">&#9670; <b>iart.ai</b></div>
+  <button class="ui" id="replay">&#8635; Replay</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  function splitChars(word) {
+    const text = word.textContent;
+    word.textContent = '';
+    const chars = [];
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.innerHTML = (ch === ' ') ? '&nbsp;' : ch;
+      word.appendChild(span);
+      if (ch !== ' ') chars.push(span);
+    }
+    return chars;
+  }
+  document.querySelectorAll('.word:not(.brandmark)').forEach(splitChars);
+
+  function splitBrand(el) {
+    const html = el.innerHTML;
+    el.innerHTML = '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    tmp.childNodes.forEach(node => {
+      const isDot = node.nodeType === 1;
+      for (const ch of node.textContent) {
+        const span = document.createElement('span');
+        span.className = 'char' + (isDot ? ' red' : '');
+        span.textContent = ch;
+        el.appendChild(span);
+      }
+    });
+  }
+  document.querySelectorAll('.brandmark').forEach(splitBrand);
+
+  const charsOf = (sel) => gsap.utils.toArray(sel + ' .char');
+
+  gsap.set('.scene', { autoAlpha: 0 });
+  gsap.set(['#phone', '#captions', '#count', '#countRing', '#bigHeart'], { autoAlpha: 0 });
+  gsap.set('.cap', { autoAlpha: 0 });
+
+  gsap.to('#blobA', { xPercent: 16, yPercent: 20, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobB', { xPercent: -18, yPercent: -12, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobC', { xPercent: -22, yPercent: 16, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+  function build() {
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 7.6, ease: 'none' }, 0);
+
+    // ===== SCENE 1 (0.0 – 1.3) HOOK =====
+    tl.set('#s1', { autoAlpha: 1 }, 0)
+      .from('#s1 .kicker', { yPercent: 100, opacity: 0, duration: 0.45 }, 0.05)
+      .from(charsOf('#s1'), {
+        scale: 0, rotation: -25, opacity: 0,
+        stagger: { each: 0.05, from: 'start' }, duration: 0.5, ease: 'back.out(2.2)'
+      }, 0.18)
+      .to('#stage', { x: 6, duration: 0.05, yoyo: true, repeat: 5 }, 0.7)
+      .to('#stage', { x: 0, duration: 0.05 }, 1.0)
+      // TRANSITION 1 — IMPLODE
+      .to(charsOf('#s1').concat(gsap.utils.toArray('#s1 .kicker')), {
+        scale: 0, rotation: 160, opacity: 0, filter: 'blur(6px)',
+        stagger: { each: 0.02, from: 'edges' }, duration: 0.4, ease: 'power3.in'
+      }, 1.1)
+      .set('#s1', { autoAlpha: 0 });
+
+    // ===== SCENE 2 (1.3 – 3.0) PHONE + caption pop =====
+    gsap.set('#phone', { scale: 0.7, rotateY: -25 });
+    tl.set('#phone', { autoAlpha: 1 }, 1.3)
+      .from('#phone', { scale: 0.55, rotateY: -35, y: 60, opacity: 0, duration: 0.6, ease: 'back.out(1.5)' }, 1.3)
+      .to('#phone', { rotateY: 0, scale: 1, y: 0, duration: 0.6 }, 1.35)
+      .from('#phone .ui-side .ico', { scale: 0, stagger: 0.07, duration: 0.3, ease: 'back.out(2.5)' }, 1.7)
+      .from(['#phone .ui-bottom','#phone .ui-bottom2'], { scaleX: 0, transformOrigin: 'left', stagger: 0.08, duration: 0.4 }, 1.85);
+
+    // captions pop word-by-word over the phone
+    gsap.set('#captions', { y: '-6vh' });
+    tl.set('#captions', { autoAlpha: 1 }, 2.05);
+    const caps = gsap.utils.toArray('.cap');
+    caps.forEach((c, i) => {
+      tl.fromTo(c, { autoAlpha: 0, scale: 0.3, rotation: gsap.utils.random(-12, 12), y: 18 },
+        { autoAlpha: 1, scale: 1, rotation: 0, y: 0, duration: 0.28, ease: 'back.out(3)' }, 2.1 + i * 0.22)
+        .to(c, { scale: 1.12, duration: 0.1, yoyo: true, repeat: 1 }, 2.1 + i * 0.22 + 0.05);
+    });
+    // exit phone + captions
+    tl.to(['#phone'], { scale: 0.85, opacity: 0, filter: 'blur(8px)', duration: 0.4, ease: 'power2.in' }, 3.0)
+      .to('#captions', { opacity: 0, scale: 0.6, duration: 0.3, ease: 'power2.in' }, 3.0)
+      .set(['#phone','#captions'], { autoAlpha: 0 });
+
+    // TRANSITION 2 — VENETIAN SHUTTER (vertical blinds for vertical energy)
+    const blinds = ['#p1','#p2','#p3','#p4'];
+    const blindColors = ['var(--violet)','var(--pink)','var(--cyan)','var(--violet)'];
+    gsap.set(blinds, {
+      visibility: 'visible', top: 0, height: '100%', width: '25.2%',
+      left: (i) => (i * 25) + '%',
+      backgroundColor: (i) => blindColors[i],
+      scaleX: 0, transformOrigin: 'left center'
+    });
+    tl.to(blinds, { scaleX: 1, duration: 0.22, stagger: 0.05, ease: 'power2.in' }, 3.05)
+      .set(blinds, { transformOrigin: 'right center' }, 3.36)
+      .to(blinds, { scaleX: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }, 3.38)
+      .set(blinds, { visibility: 'hidden' }, 3.72);
+
+    // ===== SCENE 3 (3.3 – 4.7) COUNTDOWN 3-2-1 =====
+    gsap.set('#countRing', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 });
+    gsap.set('#count', { top: '50%', left: '50%', xPercent: -50, yPercent: -50 });
+    const nums = ['3','2','1'];
+    tl.set('#count', { autoAlpha: 1 }, 3.35)
+      .set('#countRing', { autoAlpha: 1 }, 3.35);
+    nums.forEach((n, i) => {
+      const t = 3.4 + i * 0.42;
+      tl.call(() => { document.getElementById('count').textContent = n; }, null, t)
+        .fromTo('#count', { scale: 1.8, opacity: 0, filter: 'blur(10px)' },
+          { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.28, ease: 'back.out(2)' }, t)
+        .to('#count', { scale: 0.4, opacity: 0, filter: 'blur(8px)', duration: 0.18, ease: 'power2.in' }, t + 0.3)
+        .fromTo('#countRing', { scale: 0.4, opacity: 0.9 }, { scale: 1.2, opacity: 0, duration: 0.42, ease: 'power2.out' }, t);
+    });
+    tl.set(['#count','#countRing'], { autoAlpha: 0 }, 4.7)
+      .to('#flash', { opacity: 0.4, duration: 0.05 }, 4.65)
+      .to('#flash', { opacity: 0, duration: 0.3 }, 4.7);
+
+    // TRANSITION 3 — COLOR-BAND WIPE (diagonal)
+    const bands = ['#p1','#p2','#p3'];
+    const bandColors = ['var(--pink)','var(--violet)','var(--cyan)'];
+    gsap.set(bands, {
+      visibility: 'visible', left: '-5%', width: '110%', height: '120%',
+      top: 0, skewY: 8,
+      backgroundColor: (i) => bandColors[i],
+      yPercent: -130
+    });
+    tl.to(bands, { yPercent: 130, duration: 0.5, stagger: 0.08, ease: 'power3.inOut' }, 4.72)
+      .set(bands, { visibility: 'hidden' }, 5.32);
+
+    // ===== SCENE 4 (4.95 – 6.0) HEART BURST =====
+    tl.set('#bigHeart', { autoAlpha: 1 }, 4.95)
+      .fromTo('#bigHeart', { scale: 0, rotation: -20 }, { scale: 1, rotation: 0, duration: 0.45, ease: 'back.out(2.4)' }, 4.95)
+      .to('#bigHeart', { scale: 1.18, duration: 0.12, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 5.45)
+      // burst of small hearts
+      .call(spawnHearts, null, 5.5)
+      .to('#bigHeart', { scale: 0, opacity: 0, duration: 0.35, ease: 'power2.in' }, 5.75)
+      .set('#bigHeart', { autoAlpha: 0 });
+
+    // TRANSITION 4 — WHIP-PAN BLUR
+    tl.to('#stage', { x: 100, filter: 'blur(7px)', duration: 0.16, ease: 'power2.in' }, 5.85)
+      .set('#stage', { x: -110 }, 6.01)
+      .to('#stage', { x: 0, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, 6.01);
+
+    // ===== SCENE 5 (6.05 – 6.6) SHORT FORM bridge =====
+    tl.set('#s5', { autoAlpha: 1 }, 6.05)
+      .from(charsOf('#s5'), {
+        yPercent: 120, scale: 1.6, opacity: 0,
+        stagger: { each: 0.04, from: 'start' }, duration: 0.5, ease: 'back.out(1.8)'
+      }, 6.05)
+      .to(charsOf('#s5'), {
+        yPercent: -130, opacity: 0, filter: 'blur(10px)',
+        stagger: { each: 0.02, from: 'edges' }, duration: 0.35, ease: 'power3.in'
+      }, 6.55)
+      .set('#s5', { autoAlpha: 0 });
+
+    // TRANSITION 5 — IRIS open
+    gsap.set('#p1', {
+      visibility: 'visible', top: '50%', left: '50%', width: '300vmax', height: '300vmax',
+      xPercent: -50, yPercent: -50, borderRadius: '50%',
+      backgroundColor: 'var(--bg)', scale: 1
+    });
+    tl.set('#p1', { scale: 1 }, 6.7)
+      .to('#p1', { scale: 0, duration: 0.45, ease: 'power3.inOut' }, 6.7)
+      .set('#p1', { visibility: 'hidden' }, 7.15);
+
+    // ===== SCENE 6 (6.75 – 7.6) BRAND finale =====
+    tl.set('#s6', { autoAlpha: 1 }, 6.75)
+      .from('#s6 .kicker', { yPercent: 100, opacity: 0, stagger: 0.15, duration: 0.5 }, 6.75)
+      .from(charsOf('#s6 .brandmark'), {
+        yPercent: 115, scale: 1.4, opacity: 0,
+        stagger: { each: 0.06, from: 'start' }, duration: 0.7, ease: 'back.out(1.9)'
+      }, 6.82)
+      .from('#s6 .brandmark .red', { scale: 0, duration: 0.5, ease: 'back.out(3)' }, 7.2)
+      .to('#s6 .brandmark .red', { scale: 1.3, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 7.4)
+      .to('#s6 .brandmark', { scale: 1.03, duration: 0.9, ease: 'sine.inOut' }, 7.4)
+      .to('#flash', { opacity: 0.3, duration: 0.06 }, 6.82)
+      .to('#flash', { opacity: 0, duration: 0.3 }, 6.88);
+
+    tl.to({}, { duration: 0.5 });
+    return tl;
+  }
+
+  function spawnHearts() {
+    const wrap = document.getElementById('heartWrap');
+    wrap.innerHTML = '';
+    const emojis = ['❤️','💖','💕','✨','💗'];
+    for (let i = 0; i < 16; i++) {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = emojis[i % emojis.length];
+      wrap.appendChild(h);
+      const ang = (Math.PI * 2 * i) / 16 + Math.random() * 0.4;
+      const dist = 160 + Math.random() * 180;
+      gsap.fromTo(h,
+        { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
+        { x: Math.cos(ang) * dist, y: Math.sin(ang) * dist - 60,
+          scale: gsap.utils.random(0.7, 1.4), opacity: 0, rotation: gsap.utils.random(-90, 90),
+          duration: 1.0, ease: 'power2.out' });
+    }
+  }
+
+  let master = build();
+  document.getElementById('replay').addEventListener('click', () => master.restart());
+</script>
+</body>
+</html>
