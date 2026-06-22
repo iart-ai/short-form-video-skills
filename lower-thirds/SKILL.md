@@ -108,6 +108,37 @@ In a renderer, make the roster an input prop and render once per row (`--props`)
 - Text legible over any plate (bar/scrim/shadow); one brand accent throughout.
 - Name/role/theme are props — one template renders the whole roster.
 
+## Deliver & verify (rendered stills → MP4)
+
+The lower third ships as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`, name/role/theme as props) — enter/dwell/exit all driven by `useCurrentFrame()`, never `Date.now()` / `Math.random()` / timers. Deliverable = `out/*.mp4` + the project (re-render per roster row). 9:16 vertical (1080×1920) is the default.
+
+**Verify loop — render stills → inspect → encode.** Sample the three phases so you catch a stagger or safe-area bug before encoding (or batching the whole roster).
+
+```bash
+# Stills at enter / dwell / exit — WITH SHIPPED PROPS (a real roster row, not defaults)
+npx remotion still LowerThird out/f-enter.png --frame=10  --props='{"name":"Ada Lovelace","role":"Founder, Analytical Engines"}'
+npx remotion still LowerThird out/f-dwell.png --frame=75  --props='{"name":"Ada Lovelace","role":"Founder, Analytical Engines"}'
+npx remotion still LowerThird out/f-exit.png  --frame=N   --props='{"name":"Ada Lovelace","role":"Founder, Analytical Engines"}'
+
+# Inspect each PNG — focus the DWELL frame (fully on screen):
+#  - hierarchy holds: name dominant (>=1.6x role), role in brand accent; both fully revealed, not mid-wipe
+#  - brand lock: font, accent color, bar/scrim correct; legible over the plate
+#  - 9:16 safe area: band LIFTED above the bottom ~20-35% UI zone, clear of top ~12% and the right action rail; left-anchored inside title-safe
+#  - enter/exit frames show partial reveal (animation actually runs), not a hard cut
+
+npx remotion render LowerThird out/lower-third.mp4 --props='{"name":"Ada Lovelace","role":"Founder, Analytical Engines"}'
+npx remotion render LowerThird out/demo.gif --codec=gif                # README proof clip
+```
+
+**Batch roster**: verify ONE row via stills *before* rendering all names — catch a layout/overflow bug once, not N times. Use `npx remotion compositions` for `durationInFrames`/`fps` to pick the dwell + exit frames.
+
+**Before you finish:**
+1. Stills render cleanly at enter, dwell, and exit — no missing font/brand assets.
+2. At the dwell frame: name dominant over role, brand accent + bar correct, fully (not partly) revealed.
+3. The band is inside the 9:16 safe area — lifted above the bottom UI zone, clear of top and right rail — at every checked frame.
+4. Frame-driven only — no `Date.now()` / `Math.random()` / timers; enter/exit show motion, never a hard cut.
+5. A real roster row (not `defaultProps`) renders correctly; MP4 encoded, GIF optional.
+
 ## Reference files
 
 - `references/lower-third-component.md` — a complete runnable lower-third: a Remotion component with staggered spring enter, readable hold, and faster exit driven purely by frame; a typed theme object for brand lock; the list→many-instances sequencing pattern; a per-row batch render script; plus a dependency-free CSS/HTML version of the same design with mask-reveal and wipe-bar variants.

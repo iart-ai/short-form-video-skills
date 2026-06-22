@@ -113,6 +113,37 @@ Stream screens hold for minutes, so the background must loop seamlessly. Build m
 - Format matches the span (mm:ss vs dd:hh:mm:ss); leading zero units dropped when distracting.
 - Background loop period divides the timeline evenly; no seam at the wrap.
 
+## Deliver & verify (rendered stills → MP4)
+
+The countdown ships as a Remotion composition (`<Composition>` + zod `schema` + `defaultProps`, `durationInSeconds` a prop) — the timer is a pure function of `useCurrentFrame()`, never `setInterval` / `Date.now()` / `Math.random()`. Set `durationInFrames = durationInSeconds * fps`. Deliverable = `out/*.mp4` + the project. 9:16 vertical (1080×1920) is the default.
+
+**Verify loop — render stills → inspect → encode.** The whole point is frame-accuracy, so check the *digit value* at exact frames before encoding.
+
+```bash
+# Stills at start / mid / end — WITH SHIPPED PROPS (the real duration you'll render)
+npx remotion still Countdown out/f-start.png --frame=0   --props='{"durationInSeconds":300}'
+npx remotion still Countdown out/f-mid.png   --frame=N   --props='{"durationInSeconds":300}'
+npx remotion still Countdown out/f-end.png   --frame=L   --props='{"durationInSeconds":300}'  # L = durationInFrames-1
+
+# Inspect each PNG — the digits must read EXACTLY the frame/fps math:
+#  - at frame N, displayed = ceil(durationInSeconds - N/fps)  (e.g. 300s @ 30fps, frame 4500 → 150s → "02:30")
+#  - last frame reads 00:00 (or the end-state hold); no drift, no off-by-one second
+#  - tabular-nums: layout does not jitter between frames
+#  - 9:16 safe area: the timer + brand block sit clear of top ~12% and bottom ~20-35% UI and the right action rail
+
+npx remotion render Countdown out/countdown.mp4 --props='{"durationInSeconds":300}'   # encode once digits verify
+npx remotion render Countdown out/demo.gif --codec=gif                                 # README proof clip
+```
+
+Use `npx remotion compositions` to confirm `durationInFrames`/`fps`, then compute the frame for any second you want to check.
+
+**Before you finish:**
+1. Stills render cleanly at frame 0, mid, and last — no errors.
+2. The digit value at frame N equals `ceil(durationInSeconds - N/fps)` exactly; last frame hits 00:00 on the intended frame (no drift / off-by-one).
+3. Timer + brand stay inside the 9:16 safe area at every checked frame.
+4. Frame-driven only — no `setInterval` / `Date.now()` / timers; `tabular-nums` so layout holds.
+5. Shipped `durationInSeconds` (not just `defaultProps`) renders correctly; MP4 encoded, GIF optional.
+
 ## Reference files
 
 - `references/countdown-cookbook.md` — complete runnable Remotion `<Countdown>` (configurable duration, mm:ss / dd:hh:mm:ss, end-state hold), the count-down-to-a-fixed-date web component with timezone handling, a "starting soon" stream-screen layout (brand block + social handles + looping gradient background), and the seamless-loop background pattern.
